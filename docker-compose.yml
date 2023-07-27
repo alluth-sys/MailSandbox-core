@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  mailgraper:
+    image: mailgraper:latest
+    networks:
+      - yara_network
+
+networks:
+  yara_network:
+    external: true

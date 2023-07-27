@@ -1,16 +1,15 @@
 from t_graphtoken import getToken
-key = getToken()
 import t_minIO
 import requests
 import base64
 import t_pysql
+from yamlReader import getyamlkey
 from datetime import datetime
 
 # 用graph api把信件發過來
-access_token = key
-obj_id = '03ab3b96-cf0a-4e57-983e-9eb7b0ffc7a5'
+access_token = getToken()
+obj_id = getyamlkey('obj_id')
 url = 'https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages'
-#url = 'https://graph.microsoft.com/v1.0/users/'+obj_id+'/mailfolders/inbox/messages'
 # access設定認證
 headers = {
     'Authorization': f'Bearer {access_token}',

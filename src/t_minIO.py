@@ -1,12 +1,13 @@
 from minio import Minio
 from minio.error import S3Error
+from yamlReader import getyamlkey
 import io
 
 # 創建一個客戶端物件，將 endpoint、access_key 和 secret_key 替換為你自己的設定
 client = Minio(
     "minio:9000",
-    access_key="RH6i1YFf0kknX3j7ErL4",
-    secret_key="2VDMfJJ0ju8T5E0vHY1s2vU04S96kWHYsp6ILxmd",
+    access_key=getyamlkey('minio_access_key'),
+    secret_key=getyamlkey('minio_secret_key'),
     secure=False,
 )
 

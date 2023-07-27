@@ -1,11 +1,12 @@
 import mysql.connector
+from yamlReader import getyamlkey
 
 # 建立資料庫連線
 def create_connection():
     connection = mysql.connector.connect(
         host="db",
-        user="admin",
-        password="admin_iii",
+        user=getyamlkey('dbuser'),
+        password=getyamlkey('dbpassword'),
         database="outlookScan"
     )
     return connection
