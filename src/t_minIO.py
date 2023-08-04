@@ -1,6 +1,6 @@
 from minio import Minio
 from minio.error import S3Error
-from yamlReader import getyamlkey
+from t_yamlReader import getyamlkey
 import io
 
 # 創建一個客戶端物件，將 endpoint、access_key 和 secret_key 替換為你自己的設定

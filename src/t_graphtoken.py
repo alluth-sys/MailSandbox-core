@@ -1,9 +1,9 @@
 import msal
+from t_yamlReader import getyamlkey
 
 def getToken():
-
     config = {
-        "client_id": "ff9050b9-ddad-4b30-b158-26b93bb7a296",
+        "client_id": getyamlkey('graph_client'),
         "authority": "https://login.microsoftonline.com/common",
         "redirect_uri": "http://localhost",
         "scope": ["https://graph.microsoft.com/.default"],

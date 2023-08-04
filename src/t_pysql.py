@@ -1,5 +1,5 @@
 import mysql.connector
-from yamlReader import getyamlkey
+from t_yamlReader import getyamlkey
 
 # 建立資料庫連線
 def create_connection():

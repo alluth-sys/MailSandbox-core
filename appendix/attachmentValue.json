@@ -1,0 +1,13 @@
+{
+    "@odata.type": "#microsoft.graph.fileAttachment",
+    "@odata.mediaContentType": "text/plain",
+    "id": "AQMkADAwATM3ZmYAZS1kNGY3LWZhNTMtMDACLTAwCgBGAAADY9XFoJ43pEe2TYRuW9aNfAcAafGhIvVpyk_198HMOQEhIwAAAgEMAAAAafGhIvVpyk_198HMOQEhIwAFFYeTrwAAAAESABAAbPJVywJJ0E6fAeytLQ0MGQ==",
+    "lastModifiedDateTime": "2023-07-13T08:31:45Z",
+    "name": "test.txt",
+    "contentType": "text/plain",
+    "size": 299,
+    "isInline": false,
+    "contentId": "f_lk0w587c0",
+    "contentLocation": null,
+    "contentBytes": "SGVsbG8sIHdvcmxkIQpUaGlzIGlzIGEgc2FtcGxlIHRleHQgZmlsZS4KV2UgYXJlIGdvaW5nIHRvIHNjYW4gaXQgd2l0aCBhIHlhcmEgcnVsZS4KVGhlIHNlY3JldCBjb2RlIGlzIDEyMzQ1Lg=="
+}

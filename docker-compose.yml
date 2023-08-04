@@ -2,10 +2,13 @@ version: '3.8'
 
 services:
   mailgraper:
+    build: .
     image: mailgraper:latest
+    ports:
+      - 8777:8777
     networks:
-      - yara_network
+      - yarascanlistener_default
 
 networks:
-  yara_network:
+  yarascanlistener_default:
     external: true
