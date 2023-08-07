@@ -2,6 +2,11 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from starlette.status import HTTP_401_UNAUTHORIZED
 from t_yamlReader import getyamlkey
+import t_pysql
+from getmail import upLoadAttatchment
+from typing import List
+from pydantic import BaseModel
+
 import msal
 import uvicorn
 
@@ -24,6 +29,31 @@ def login(request: Request):
     # 建立登入的 URL 並重定向用戶到該 URL
     auth_url = app.get_authorization_request_url(config['scope'], redirect_uri=config['redirect_uri'])
     return RedirectResponse(auth_url)
+
+class Task(BaseModel):
+    taskID: str
+    token: str
+    message_list: List[str]
+
+@app.post("/task")
+async def create_task(task: Task):
+    for message in task.message_list:
+        upLoadAttatchment(token=task.token,taskID=task.taskID,MessageID=message)
+    return task
+
+@app.get("/checkTask")
+def checkTask(taskID:str):
+    rows = t_pysql.getTaskData(taskID)
+    for row in rows:
+        if row[2] == None:
+            return False
+    return True
+
+@app.get("/showResult")
+def showResult(taskID:str):
+    rows = t_pysql.getyaraResult
+    return rows
+
 
 
 @app.get("/callback")

@@ -6,6 +6,8 @@ services:
     image: mailgraper:latest
     ports:
       - 8777:8777
+    volumes:
+      - ./src:/app
     networks:
       - yarascanlistener_default
 

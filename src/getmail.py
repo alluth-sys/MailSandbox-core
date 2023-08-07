@@ -113,7 +113,7 @@ def listMailInfo(token,top=100,skip=0) -> list:
     return mails
 
 ## list mail attatchments
-def listMailattatchment(messageID:str,\
+def listMailattatchment(token:str,messageID:str,\
     getHeader = getHeader) -> list:
     """get a list of attatchments about specific messageID
 
@@ -124,7 +124,7 @@ def listMailattatchment(messageID:str,\
         list: a list of attatchments information which like attatchmentValue.json in appendix
     """
     attachment_url = f"https://graph.microsoft.com/v1.0/me/messages/"+messageID+"/attachments"
-    headers = getHeader()
+    headers = getHeader(token)
     attachment_response = requests.get(attachment_url, headers=headers)
 
     # 得到attachment的value們，要再進一步拆解
@@ -134,6 +134,19 @@ def listMailattatchment(messageID:str,\
         if attachment['@odata.type'] == '#microsoft.graph.fileAttachment':
             goodAttatchments.append(attachment)
     return goodAttatchments
+
+def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattatchment,\
+                        uploadFile = t_minIO.uploadFile,\
+                        insert_attData = t_pysql.insert_attDataTask):
+    # 取得所有attatchment
+        attachments = listMailattatchment(token,MessageID)
+        for attachment in attachments:
+            attachment_content = base64.b64decode(attachment['contentBytes'])
+            # 把附件放到minIO
+            uploadFile(attachment_content,MessageID+attachment['name'])
+            # 把附件訊息放到sql
+            #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
+            insert_attData(MessageID,attachment['name'],MessageID+attachment['name'],taskID)
 
 def getMail(token:str,\
     listMailInfo=listMailInfo,\
@@ -173,5 +186,3 @@ def getMail(token:str,\
             uploadFile(attachment_content,MessageID+attachment['name'])
             # 把附件訊息放到sql
             insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
-
-

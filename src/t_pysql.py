@@ -37,7 +37,7 @@ def insert_maildata(MessageID, Subject, Received,Sender):
     cursor = conn.cursor()
 
     query = "INSERT INTO mail (MessageID, Subject, Received,Sender) VALUES (%s, %s, %s, %s)"
-    values = (MessageID, Subject, Received,Sender)
+    values = (MessageID, Subject, Received, Sender)
 
     cursor.execute(query, values)
     conn.commit()
@@ -46,6 +46,55 @@ def insert_maildata(MessageID, Subject, Received,Sender):
 
     cursor.close()
     conn.close()
+
+def insert_attDataTask(MessageID,AttatchmentName,ID,TaskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    query = "INSERT INTO attatchmentTask (MessageID,AttatchmentName,ID,TaskID) VALUES (%s, %s, %s, %s)"
+    values = (MessageID,AttatchmentName,ID,TaskID)
+
+    cursor.execute(query, values)
+    conn.commit()
+
+    print("Data inserted successfully.")
+
+    cursor.close()
+    conn.close()
+
+#把task的東西弄好
+def getTaskData(TaskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT * 
+        FROM attatchmentTask 
+        WHERE TaskID = %s
+    """
+    cursor.execute(task_query, (TaskID,))
+    rows = []
+    for row in cursor:
+        rows.append(row)
+    conn.close()
+    return rows
+
+def getyaraResult(AttID):
+    conn = create_connection()
+    cursor = conn.cursor()
+    # Query for 'isBad' = 1 and join with 'yara_result'
+    is_bad_query = """
+        SELECT yr.* 
+        FROM attatchmentTask yt 
+        JOIN yara_result yr ON yt.ID = yr.ID 
+        WHERE yt.isBad = %s
+    """
+    cursor.execute(is_bad_query, (1,))
+    conn.close()
+    for row in cursor:
+        print(row)
+    return cursor
 
 def insert_attData(MessageID,AttatchmentName,ID):
     conn = create_connection()
