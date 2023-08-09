@@ -89,6 +89,55 @@ def insert_attDataTask(MessageID,AttatchmentName,ID,TaskID):
     cursor.close()
     conn.close()
 
+def insert_userTask(userID,taskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    query = "INSERT INTO user_task (userID,taskID) VALUES (%s, %s)"
+    values = (userID,taskID)
+
+    cursor.execute(query, values)
+    conn.commit()
+
+    print("Data inserted successfully.")
+
+    cursor.close()
+    conn.close()
+
+def getTaskByUser(userID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT * 
+        FROM user_task 
+        WHERE userID = %s
+    """
+    cursor.execute(task_query, (userID,))
+    rows = []
+    for row in cursor:
+        rows.append(row)
+    conn.close()
+    return rows
+
+def getFileIDByTask(taskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT ID, AttatchmentName, TaskID 
+        FROM attatchmentTask 
+        WHERE TaskID = %s
+    """
+    cursor.execute(task_query, (taskID,))
+    rows = []
+    for row in cursor:
+        rows.append(row)
+    conn.close()
+    return rows
+
 # 取得attatchmentTask 這個表格符合TaskID的所有內容
 def getTaskData(TaskID):
     conn = create_connection()
@@ -101,6 +150,22 @@ def getTaskData(TaskID):
         WHERE TaskID = %s
     """
     cursor.execute(task_query, (TaskID,))
+    rows = []
+    for row in cursor:
+        rows.append(row)
+    conn.close()
+    return rows
+
+def getyaraResultByFileID(fileID):
+    conn = create_connection()
+    cursor = conn.cursor()
+    # Query for 'isBad' = 1 and join with 'yara_result'
+    is_bad_query = """
+        SELECT * 
+        FROM yara_result 
+        WHERE ID = %s
+    """
+    cursor.execute(is_bad_query, (fileID,))
     rows = []
     for row in cursor:
         rows.append(row)

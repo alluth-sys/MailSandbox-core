@@ -84,6 +84,7 @@ app.add_middleware(
 class Task(BaseModel):
     taskID: str
     token: str
+    userID: str
     message_list: List[str]
 
 
@@ -99,11 +100,11 @@ async def create_task(task: Task) -> str:
     """
     for message in task.message_list:
         upLoadAttatchment(token=task.token,taskID=task.taskID,MessageID=message)
-    
+    t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
     return task.taskID
 
 @app.get("/checkTask")
-def checkTask(taskID:str) -> bool:
+def checkTask(userID:str) -> bool:
     """check wheather the task is done, it check the column isbad == None in database
 
     Args:
@@ -112,6 +113,18 @@ def checkTask(taskID:str) -> bool:
     Returns:
         bool: wheather the task is done
     """
+    userTasks = t_pysql.getTaskByUser(userID)
+    result = []
+    for task in userTasks:
+        dic = {
+            "taskID":task[1],
+            "isFinish":isTaskDone(task[1])
+        }
+        result.append(dic)
+    return result
+    
+
+def isTaskDone(taskID):
     rows = t_pysql.getTaskData(taskID)
     for row in rows:
         if row[2] == None:
@@ -120,8 +133,25 @@ def checkTask(taskID:str) -> bool:
 
 @app.get("/showResult")
 def showResult(taskID:str):
+    files = t_pysql.getFileIDByTask(taskID)
+    result = []
+    for file in files:
+        dic = {
+            "filename":file[1],
+            "violations":getFileViolation(file[0])
+        }
+        print()
+
     rows = t_pysql.getyaraResult(taskID)
     return rows
+
+def getFileViolation(fileID:str):
+    rows = t_pysql.getyaraResultByFileID(fileID)
+    result = []
+    for row in rows:
+        result.append(row[1])
+    return result
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=PORT)
