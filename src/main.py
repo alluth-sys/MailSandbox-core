@@ -104,14 +104,12 @@ async def create_task(task: Task) -> str:
     return task.taskID
 
 @app.get("/checkTask")
-def checkTask(userID:str) -> bool:
+def checkTask(userID:str):
     """check wheather the task is done, it check the column isbad == None in database
 
     Args:
         taskID (str): the task id specific on front-end
 
-    Returns:
-        bool: wheather the task is done
     """
     userTasks = t_pysql.getTaskByUser(userID)
     result = []
