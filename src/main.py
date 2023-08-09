@@ -138,10 +138,10 @@ def showResult(taskID:str):
             "filename":file[1],
             "violations":getFileViolation(file[0])
         }
-        print()
+        result.append(dic)
 
-    rows = t_pysql.getyaraResult(taskID)
-    return rows
+    #rows = t_pysql.getyaraResult(taskID)
+    return result
 
 def getFileViolation(fileID:str):
     rows = t_pysql.getyaraResultByFileID(fileID)
