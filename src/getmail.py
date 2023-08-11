@@ -160,7 +160,7 @@ def upLoadAttatchment(token,taskID,messageID,listMailattatchment = listMailattat
         # 把附件放到minIO
         upresult = uploadFile(attachment_content,messageID + name)
         if upresult == 'error':
-            return "Error:cannot upload "+name
+            return "cannot upload "+name
         # 把附件訊息放到sql
         #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
         insert_attData(messageID,name,messageID+name,taskID)

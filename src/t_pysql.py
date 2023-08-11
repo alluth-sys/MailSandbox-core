@@ -241,9 +241,18 @@ def getTaskStatus(taskID):
         for row in cursor:
             rows.append(row)
         conn.close()
-        return rows[0]
+        return {"status":rows[0][0]}
     except IndexError:
-        return "taskID not found"
+        return {"status":"taskID not found"}
+
+# taskID_not_found
+# cannot_upload {name}
+# graph_api_token_failed
+
+# initializing
+# start_uploading_file
+# uploading_file_done
+# success
 
 # 更新資料
 def updateIsbad(id,value):

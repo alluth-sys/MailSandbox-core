@@ -111,7 +111,7 @@ def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getM
             mail = getMessageValue(token=task.token,messageID=message)
             MessageID, Subject, Received, Sender= getMailProperty(mail)
         except ValueError as err:
-            t_pysql.updateTaskStatus(task.taskID,"Error:Graph_API_Token_Faile")
+            t_pysql.updateTaskStatus(task.taskID,"graph_api_token_failed")
             t_pysql.insert_taskError(taskID=task.taskID,error="Error:Graph_API_Token_Faile")
             print(err)
             return "Error"
@@ -122,20 +122,20 @@ def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getM
             # 假如id不在，把property加上去資料庫
         # 把messageID跟taskID一起放進資料庫
         print("start upload")
-        t_pysql.updateTaskStatus(task.taskID,"Status:start_uploading_file")
+        t_pysql.updateTaskStatus(task.taskID,"start_uploading_file")
         uploadResult = upLoadAttatchment(token=task.token,taskID=task.taskID,messageID=message)
         if uploadResult[0:5] == "Error":
             t_pysql.insert_taskError(taskID=task.taskID,error=uploadResult)
             t_pysql.updateTaskStatus(task.taskID,uploadResult)
             return "error"
         t_pysql.insert_messageTask(message,task.taskID)
-    t_pysql.updateTaskStatus(task.taskID,"Status:uploading_file_done")
+    t_pysql.updateTaskStatus(task.taskID,"uploading_file_done")
     
 
 @app.get("/taskStatus")
 def taskStatus(taskID:str):
+    isTaskDone(taskID)
     return t_pysql.getTaskStatus(taskID)
-
 
 @app.get("/checkTask")
 def checkTask(userID:str):
@@ -161,8 +161,11 @@ def isTaskDone(taskID):
         if row[2] == None:
             return False
     status = str(t_pysql.getTaskStatus(taskID))
-    if status == "('Status:uploading_file_done',)":
+    if status == "('uploading_file_done',)":
+        t_pysql.updateTaskStatus(taskID,"success")
         return True#True
+    elif status == "('success',)":
+        return True
     return False
 
 @app.get("/showResult")
