@@ -102,18 +102,40 @@ async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty
 
 def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getMessageValue):
     print("starting creating task")
+    t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
+    t_pysql.insert_task(taskID=task.taskID)
+    t_pysql.updateTaskStatus(task.taskID,"initializing")
+
     for message in task.message_list:
-        #把id抓下來跟資料庫比對
-        if not t_pysql.check_duplicate_id(message):
-            # 假如id不在，把property加上去資料庫
+        try:
             mail = getMessageValue(token=task.token,messageID=message)
             MessageID, Subject, Received, Sender= getMailProperty(mail)
+        except ValueError as err:
+            t_pysql.updateTaskStatus(task.taskID,"Error:Graph_API_Token_Faile")
+            t_pysql.insert_taskError(taskID=task.taskID,error="Error:Graph_API_Token_Faile")
+            print(err)
+            return "Error"
+        #把id抓下來跟資料庫比對
+        if not t_pysql.check_duplicate_id(message):
+            print("check mid duplicate")
             t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
+            # 假如id不在，把property加上去資料庫
             continue
         # 把messageID跟taskID一起放進資料庫
+        print("start upload")
+        t_pysql.updateTaskStatus(task.taskID,"Status:start_uploading_file")
+        uploadResult = upLoadAttatchment(token=task.token,taskID=task.taskID,messageID=message)
+        if uploadResult[0:5] == "Error":
+            t_pysql.insert_taskError(taskID=task.taskID,error=uploadResult)
+            t_pysql.updateTaskStatus(task.taskID,uploadResult)
+            return "error"
         t_pysql.insert_messageTask(message,task.taskID)
-        upLoadAttatchment(token=task.token,taskID=task.taskID,messageID=message)
-    t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
+    t_pysql.updateTaskStatus(task.taskID,"Status:uploading_file_done")
+    
+
+@app.get("/taskStatus")
+def taskStatus(taskID:str):
+    return t_pysql.getTaskStatus(taskID)
 
 
 @app.get("/checkTask")
@@ -133,14 +155,16 @@ def checkTask(userID:str):
         }
         result.append(dic)
     return result
-    
 
 def isTaskDone(taskID):
     rows = t_pysql.getTaskData(taskID)
     for row in rows:
         if row[2] == None:
             return False
-    return True
+    status = str(t_pysql.getTaskStatus(taskID))
+    if status == "('Status:uploading_file_done',)":
+        return True#True
+    return False
 
 @app.get("/showResult")
 def showResult(taskID:str):

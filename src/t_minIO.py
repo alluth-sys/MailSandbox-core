@@ -32,15 +32,17 @@ def uploadFIlefromLocal(objectPath,name):
         print(f"error occurred: {exc}")
 
 def uploadFile(raw,filename):
-    # 将数据写入内存中
-    data = raw#.encode()
-
-    # 创建 BytesIO 对象
-    stream = io.BytesIO(data)
-
-    # 将数据上传到 MinIO
-    client.put_object("truck", filename, stream, len(data))
-
+    try:
+        # 将数据写入内存中
+        data = raw#.encode()
+        # 创建 BytesIO 对象
+        stream = io.BytesIO(data)
+        # 将数据上传到 MinIO
+        client.put_object("truck", filename, stream, len(data))
+        return "done"
+    except S3Error as exc:
+        print(f"error occurred: {exc}")
+        return "error"
 
 def loadFile(filename):
     # 讀取資料

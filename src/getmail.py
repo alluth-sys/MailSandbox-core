@@ -155,14 +155,18 @@ def upLoadAttatchment(token,taskID,messageID,listMailattatchment = listMailattat
         print(name)
         name = name.replace('.','_')
         name = name.replace('__','_')
-        name = name[0:10]
+        name = name[0:20]
         attachment_content = base64.b64decode(attachment['contentBytes'])
         # 把附件放到minIO
-        uploadFile(attachment_content,messageID + name)
+        upresult = uploadFile(attachment_content,messageID + name)
+        if upresult == 'error':
+            return "Error:cannot upload "+name
         # 把附件訊息放到sql
         #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
         insert_attData(messageID,name,messageID+name,taskID)
+    return "Done"
 
+#TODO: 有可能會抓錯，例如token壞掉
 def getMessageValue(token:str,messageID:str,getHeader=getHeader):
     """把mailID給予這個函數，輸出Graph API回傳的mail json value
 
@@ -181,6 +185,8 @@ def getMessageValue(token:str,messageID:str,getHeader=getHeader):
 
     response = requests.get(url, headers=headers)
     mail = response.json()
+    if "error" in mail:
+        raise ValueError('error in request GraphAPI!' + str(mail["error"]))
     return mail
 
 def getMailProperty(mailValue:str):

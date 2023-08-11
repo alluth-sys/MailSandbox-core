@@ -89,6 +89,26 @@ def insert_attDataTask(MessageID,AttatchmentName,ID,TaskID):
     cursor.close()
     conn.close()
 
+def insert_task(taskID):
+    from datetime import datetime
+    current_time = datetime.now()
+    sql_format_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+
+
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    query = "INSERT INTO task (taskID, createTime, status) VALUES (%s, %s, %s)"
+    values = (taskID,sql_format_time,"creating")
+
+    cursor.execute(query, values)
+    conn.commit()
+
+    print("Data inserted successfully.")
+
+    cursor.close()
+    conn.close()
+
 def insert_userTask(userID,taskID):
     conn = create_connection()
     cursor = conn.cursor()
@@ -205,6 +225,26 @@ def getyaraResult(taskID):
     conn.close()
     return rows
 
+def getTaskStatus(taskID):
+    try:
+        conn = create_connection()
+        cursor = conn.cursor()
+
+        # Query for task 'ttttt'
+        task_query = """
+            SELECT status 
+            FROM task 
+            WHERE TaskID = %s
+        """
+        cursor.execute(task_query, (taskID,))
+        rows = []
+        for row in cursor:
+            rows.append(row)
+        conn.close()
+        return rows[0]
+    except IndexError:
+        return "taskID not found"
+
 # 更新資料
 def updateIsbad(id,value):
     conn = create_connection()
@@ -217,6 +257,36 @@ def updateIsbad(id,value):
     conn.commit()
 
     print("Data inserted successfully.")
+
+    cursor.close()
+    conn.close()
+
+def updateTaskStatus(taskID,status):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # 更新isbad
+    update_query = "UPDATE task SET status = %s WHERE taskID = %s"
+    values = (status, taskID)
+    cursor.execute(update_query, values)
+    conn.commit()
+
+    print("update task"+taskID+" to " + status)
+
+    cursor.close()
+    conn.close()
+
+def insert_taskError(taskID,error):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    query = "INSERT INTO taskError (taskID,Error) VALUES (%s, %s)"
+    values = (taskID,error)
+
+    cursor.execute(query, values)
+    conn.commit()
+
+    print("Error log")
 
     cursor.close()
     conn.close()
