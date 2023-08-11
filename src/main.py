@@ -89,7 +89,7 @@ class Task(BaseModel):
 
 
 @app.post("/task")
-async def create_task(task: Task,getMailProperty:getMailProperty,getMessageValue:getMessageValue,background_task:BackgroundTasks) -> str:
+async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty=getMailProperty,getMessageValue=getMessageValue) -> str:
     """give sufficient information and it will upload specific attatchment to minIO
 
     Args:
@@ -108,7 +108,7 @@ def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getM
             # 假如id不在，把property加上去資料庫
             mail = getMessageValue(token=task.token,MessageID=message)
             MessageID, Subject, Received, Sender= getMailProperty(mail)
-            t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
+            #t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
             #continue
         # 把messageID跟taskID一起放進資料庫
         t_pysql.insert_messageTask(message,task.taskID)
