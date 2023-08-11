@@ -135,7 +135,7 @@ def listMailattatchment(token:str,messageID:str,\
             goodAttatchments.append(attachment)
     return goodAttatchments
 
-def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattatchment,\
+def upLoadAttatchment(token,taskID,messageID,listMailattatchment = listMailattatchment,\
                         uploadFile = t_minIO.uploadFile,\
                         insert_attData = t_pysql.insert_attDataTask):
     """把某一個message的所有attatchment丟上去
@@ -147,7 +147,7 @@ def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattat
         listMailattatchment (_type_, optional): _description_. Defaults to listMailattatchment.
     """
 # 取得所有attatchment
-    attachments = listMailattatchment(token,MessageID)
+    attachments = listMailattatchment(token,messageID)
     for attachment in attachments:
         import re
         print(attachment['name'])
@@ -155,12 +155,13 @@ def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattat
         print(name)
         name = name.replace('.','_')
         name = name.replace('__','_')
+        name = name[0:10]
         attachment_content = base64.b64decode(attachment['contentBytes'])
         # 把附件放到minIO
-        uploadFile(attachment_content,MessageID + name[0:10])
+        uploadFile(attachment_content,messageID + name)
         # 把附件訊息放到sql
         #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
-        insert_attData(MessageID,name,MessageID+name,taskID)
+        insert_attData(messageID,name,messageID+name,taskID)
 
 def getMessageValue(token:str,messageID:str,getHeader=getHeader):
     """把mailID給予這個函數，輸出Graph API回傳的mail json value

@@ -104,17 +104,16 @@ def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getM
     print("starting creating task")
     for message in task.message_list:
         #把id抓下來跟資料庫比對
-        #if not t_pysql.check_duplicate_id(message):
+        if not t_pysql.check_duplicate_id(message):
             # 假如id不在，把property加上去資料庫
-            #mail = getMessageValue(token=task.token,MessageID=message)
-            #MessageID, Subject, Received, Sender= getMailProperty(mail)
-            #t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
-            #continue
+            mail = getMessageValue(token=task.token,messageID=message)
+            MessageID, Subject, Received, Sender= getMailProperty(mail)
+            t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
+            continue
         # 把messageID跟taskID一起放進資料庫
-        #t_pysql.insert_messageTask(message,task.taskID)
-        upLoadAttatchment(token=task.token,taskID=task.taskID,MessageID=message)
+        t_pysql.insert_messageTask(message,task.taskID)
+        upLoadAttatchment(token=task.token,taskID=task.taskID,messageID=message)
     t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
-
 
 
 @app.get("/checkTask")
