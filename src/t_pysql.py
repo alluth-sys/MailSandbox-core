@@ -84,7 +84,7 @@ def insert_attDataTask(MessageID,AttatchmentName,ID,TaskID):
     cursor.execute(query, values)
     conn.commit()
 
-    print("Data inserted successfully.")
+    print("Data inserted successfully. to attatchData")
 
     cursor.close()
     conn.close()
@@ -118,7 +118,6 @@ def insert_messageTask(messageID,taskID):
 
     cursor.close()
     conn.close()
-
 
 def getTaskByUser(userID):
     conn = create_connection()

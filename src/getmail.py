@@ -149,12 +149,18 @@ def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattat
 # 取得所有attatchment
     attachments = listMailattatchment(token,MessageID)
     for attachment in attachments:
+        import re
+        print(attachment['name'])
+        name = re.sub(r'[^\w\._]', '_', attachment['name'])
+        print(name)
+        name = name.replace('.','_')
+        name = name.replace('__','_')
         attachment_content = base64.b64decode(attachment['contentBytes'])
         # 把附件放到minIO
-        uploadFile(attachment_content,MessageID+attachment['name'])
+        uploadFile(attachment_content,MessageID + name[0:10])
         # 把附件訊息放到sql
         #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
-        insert_attData(MessageID,attachment['name'],MessageID+attachment['name'],taskID)
+        insert_attData(MessageID,name,MessageID+name,taskID)
 
 def getMessageValue(token:str,messageID:str,getHeader=getHeader):
     """把mailID給予這個函數，輸出Graph API回傳的mail json value

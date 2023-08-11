@@ -87,7 +87,6 @@ class Task(BaseModel):
     userID: str
     message_list: List[str]
 
-
 @app.post("/task")
 async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty=getMailProperty,getMessageValue=getMessageValue) -> str:
     """give sufficient information and it will upload specific attatchment to minIO
@@ -102,16 +101,17 @@ async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty
     return task.taskID
 
 def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getMessageValue):
+    print("starting creating task")
     for message in task.message_list:
         #把id抓下來跟資料庫比對
-        if not t_pysql.check_duplicate_id(message):
+        #if not t_pysql.check_duplicate_id(message):
             # 假如id不在，把property加上去資料庫
-            mail = getMessageValue(token=task.token,MessageID=message)
-            MessageID, Subject, Received, Sender= getMailProperty(mail)
+            #mail = getMessageValue(token=task.token,MessageID=message)
+            #MessageID, Subject, Received, Sender= getMailProperty(mail)
             #t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
             #continue
         # 把messageID跟taskID一起放進資料庫
-        t_pysql.insert_messageTask(message,task.taskID)
+        #t_pysql.insert_messageTask(message,task.taskID)
         upLoadAttatchment(token=task.token,taskID=task.taskID,MessageID=message)
     t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
 
