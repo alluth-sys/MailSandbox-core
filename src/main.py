@@ -88,7 +88,7 @@ class Task(BaseModel):
     message_list: List[str]
 
 @app.post("/task")
-async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty=getMailProperty,getMessageValue=getMessageValue) -> str:
+async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty=getMailProperty,getMessageValue=getMessageValue):
     """give sufficient information and it will upload specific attatchment to minIO
 
     Args:
@@ -98,7 +98,7 @@ async def create_task(task: Task,background_task:BackgroundTasks,getMailProperty
         str: task id
     """
     background_task.add_task(creatingtask,task)
-    return task.taskID
+    return {"taskID": task.taskID}
 
 def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getMessageValue):
     print("starting creating task")
@@ -120,7 +120,6 @@ def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getM
             print("check mid duplicate")
             t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
             # 假如id不在，把property加上去資料庫
-            continue
         # 把messageID跟taskID一起放進資料庫
         print("start upload")
         t_pysql.updateTaskStatus(task.taskID,"Status:start_uploading_file")
