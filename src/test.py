@@ -1,51 +1,17 @@
 import os
 import json
 from unittest.mock import Mock, patch
-from getmail import getMail,listMailattatchment,listMailInfo
+from getmail import getMessageValue
+from datetime import datetime
 
-def test_getMail():
-    # 獲取當前目錄的上一級目錄
-    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+mail = getMessageValue(messageID="AQMkADAwATM3ZmYAZS1kNGY3LWZhNTMtMDACLTAwCgBGAAADY9XFoJ43pEe2TYRuW9aNfAcAafGhIvVpyk_198HMOQEhIwAAAgEMAAAAafGhIvVpyk_198HMOQEhIwAFGsOrOgAAAA==",token='EwB4A8l6BAAUAOyDv0l6PcCVu89kmzvqZmkWABkAAVVy7XXZ99T3wmnYZG6B57Bbnu6y3C/dKkOHQmF+bphR0BsClBwxAeGIprUfPzxW8Zxfm/L2wz6Wv0VhMiWkwLPghsXr5L1sOQt/ukBujWUANc8SOY80k9+eKvA3yjVsRubPKkQDdTx65UMsJIQtIj4hkLACDV2vtrsAQFKYjNyWtWp8LnMH4GAT25pBLTYd3YfxHnngXIsuedXNRHDz+7/8PODujFuZTfh3hm0I/ZDEAjbJJGHeuolw8MovVYrBfjI7GkgSP7174ZiRYpEpvCtSlJ7o4nnsJkAScSv0iMXgJSbG72RAYbOlALiSzIT1w9s5R8XOZNqWyWCoye3MpwoDZgAACLwzAnsRy04eSAIPaWJ+AgPNpzX5GOEkerLRXZ3LBYsSgHM+TCelOGmrdRSCx564Uf0Y18xf96S6Elt+pi73w71Nqgl5mSF0SGQpap2hVpvREwFg+d6SSAaurNcAZiG/kmATeRZ7YIU7B52oE5YVRcIdyL+u3mQqe9M89Yi4utlFKepW7R3F055yDtGUZXNSzYpz5vaJik0uuGPNWOWQisEbcLp+/8hXoEGTjw7dUAGxbUkl8YYPBiQ23pTSQbA1VvAzBioKM2dbgujfkT/t2FBwOzxBDG+73q7jZ7wse5X2+WaA+6PH/KLBvOpRkE0K48mAXbYPQBDcOAwOzONdNI9CQVDfHdvEZtfm5VW/tg9C6GtoSo61t3g3cdUlBD1aex/ct9dzOVKFcqreAp5nfLcG/3Pv9D1UPKvx9aAUnau4uktR96catbdcExQQ/6vAMs1niy97JUbqpODJUpawwnrfjisIo8tGT0TSrxJz6+ZmWMaT4CzsegUD7An2XEIwTrGkKCs/Gv8MDeSN96e3pBhmcxERhOHWOGbWMqZjgIVYtEH8mZWcTE/wjs1lGRX73JPv2vW9cTznYY1zt7wKc5rFWd+C3nDfhPS8mXlHxEwAPjwTojOW5HdLqM1dHOPHQD3pA9ZBV8QaHjoJdpjnAvIEbGCRrKRnExrL4YDTGYQvWUWKq5N8owxoB+p44HpjBLtIkQnXjptI9qWfzfrF3ZDsm1J8k4ZDZ39+rUZGwbjEv7/cuiEOHMPCRLCd8tAZsnj8eAv6QS0eRIMmAzjh+78B4ocC')
+#print(mail)
 
-    # 構建完整的文件路徑
-    att_file_path = os.path.join(root_dir, 'appendix', 'attachmentValue.json')
-    mail_file_path = os.path.join(root_dir, 'appendix', 'messageValue.json')
+received_datetime = datetime.strptime(mail['receivedDateTime'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
 
-    # 讀取JSON文件的內容
-    with open(att_file_path, 'r') as f:
-        attatchmentValue = json.load(f)
+#把信件的值取出
+MessageID, Subject, Received, Sender= \
+    mail['id'],mail['subject'], received_datetime, mail['from']['emailAddress']['address']
 
-    # 讀取JSON文件的內容
-    with open(mail_file_path, 'r') as f:
-        mailValue = json.load(f)
-    
-    # 定義一個token來用於測試
-    test_token = "test_token"
-
-    listMailInforeturn = []
-    listMailInforeturn.append(mailValue)
-    #print(listMailInforeturn)
-    mock_listMailattatchmentreturn = []
-    mock_listMailattatchmentreturn.append(attatchmentValue)
-
-    # 使用Mock對象來模擬函數
-    mock_listMailInfo = Mock(return_value=listMailInforeturn)
-    mock_check_duplicate_id = Mock(return_value=False)
-    mock_insert_maildata = Mock()
-    mock_insert_attData = Mock()
-    mock_listMailattatchment = Mock(return_value=mock_listMailattatchmentreturn)
-    mock_uploadFile = Mock()
-        
-    getMail(token = test_token, \
-            listMailInfo=mock_listMailInfo,\
-            check_duplicate_id=mock_check_duplicate_id,\
-            insert_maildata=mock_insert_maildata,\
-            insert_attData=mock_insert_attData,\
-            listMailattatchment=mock_listMailattatchment,\
-            uploadFile=mock_uploadFile)
-
-    # 在這裡添加assertions來驗證結果
-    # 例如檢查某個函數是否被調用，或者被調用的次數等等
-    mock_listMailInfo.assert_called_once_with(test_token)
-    mock_uploadFile.assert_called_once()
-test_getMail()
+# 假如不在那就加入資料庫並且繼續掃描
+print(MessageID, Subject, Received,Sender)

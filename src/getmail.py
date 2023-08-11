@@ -138,15 +138,53 @@ def listMailattatchment(token:str,messageID:str,\
 def upLoadAttatchment(token,taskID,MessageID,listMailattatchment = listMailattatchment,\
                         uploadFile = t_minIO.uploadFile,\
                         insert_attData = t_pysql.insert_attDataTask):
-    # 取得所有attatchment
-        attachments = listMailattatchment(token,MessageID)
-        for attachment in attachments:
-            attachment_content = base64.b64decode(attachment['contentBytes'])
-            # 把附件放到minIO
-            uploadFile(attachment_content,MessageID+attachment['name'])
-            # 把附件訊息放到sql
-            #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
-            insert_attData(MessageID,attachment['name'],MessageID+attachment['name'],taskID)
+    """把某一個message的所有attatchment丟上去
+
+    Args:
+        token (_type_): _description_
+        taskID (_type_): _description_
+        MessageID (_type_): _description_
+        listMailattatchment (_type_, optional): _description_. Defaults to listMailattatchment.
+    """
+# 取得所有attatchment
+    attachments = listMailattatchment(token,MessageID)
+    for attachment in attachments:
+        attachment_content = base64.b64decode(attachment['contentBytes'])
+        # 把附件放到minIO
+        uploadFile(attachment_content,MessageID+attachment['name'])
+        # 把附件訊息放到sql
+        #insert_attData(MessageID,attachment['name'],MessageID+attachment['name'])
+        insert_attData(MessageID,attachment['name'],MessageID+attachment['name'],taskID)
+
+def getMessageValue(token:str,messageID:str,getHeader=getHeader):
+    """把mailID給予這個函數，輸出Graph API回傳的mail json value
+
+    Args:
+        token (str): _description_
+        messageID (str): _description_
+        getHeader (_type_, optional): _description_. Defaults to getHeader.
+
+    Returns:
+        _type_: _description_
+    """
+    url = 'https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/'+messageID
+
+    # access設定認證
+    headers = getHeader(token)
+
+    response = requests.get(url, headers=headers)
+    mail = response.json()
+    return mail
+
+def getMailProperty(mailValue:str):
+    received_datetime = datetime.strptime(mailValue['receivedDateTime'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
+
+    #把信件的值取出
+    MessageID, Subject, Received, Sender= \
+        mailValue['id'],mailValue['subject'], received_datetime, mailValue['from']['emailAddress']['address']
+
+    # 假如不在那就加入資料庫並且繼續掃描
+    return (MessageID, Subject, Received, Sender)
 
 def getMail(token:str,\
     listMailInfo=listMailInfo,\
@@ -164,12 +202,12 @@ def getMail(token:str,\
     mails = listMailInfo(token)
     for mail in mails:
         # 把時間轉換為datatime
-        print(mail.keys())
-        received_datetime = datetime.strptime(mail['receivedDateTime'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
+        #print(mail.keys())
+        #received_datetime = datetime.strptime(mail['receivedDateTime'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
 
         #把信件的值取出
         MessageID, Subject, Received, Sender= \
-            mail['id'],mail['subject'], received_datetime, mail['from']['emailAddress']['address']
+            getMailProperty(mail)
 
         #把id抓下來跟資料庫比對
         if check_duplicate_id(MessageID):

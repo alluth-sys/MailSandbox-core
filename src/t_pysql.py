@@ -104,6 +104,22 @@ def insert_userTask(userID,taskID):
     cursor.close()
     conn.close()
 
+def insert_messageTask(messageID,taskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    query = "INSERT INTO mail_task (messageID,taskID) VALUES (%s, %s)"
+    values = (messageID,taskID)
+
+    cursor.execute(query, values)
+    conn.commit()
+
+    print("Data inserted successfully.")
+
+    cursor.close()
+    conn.close()
+
+
 def getTaskByUser(userID):
     conn = create_connection()
     cursor = conn.cursor()

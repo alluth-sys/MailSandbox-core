@@ -1,9 +1,9 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.responses import RedirectResponse
 from starlette.status import HTTP_401_UNAUTHORIZED
 from t_yamlReader import getyamlkey
 import t_pysql
-from getmail import upLoadAttatchment
+from getmail import upLoadAttatchment,getMailProperty,getMessageValue
 from typing import List
 from pydantic import BaseModel
 import msal
@@ -89,7 +89,7 @@ class Task(BaseModel):
 
 
 @app.post("/task")
-async def create_task(task: Task) -> str:
+async def create_task(task: Task,getMailProperty:getMailProperty,getMessageValue:getMessageValue,background_task:BackgroundTasks) -> str:
     """give sufficient information and it will upload specific attatchment to minIO
 
     Args:
@@ -98,10 +98,24 @@ async def create_task(task: Task) -> str:
     Returns:
         str: task id
     """
+    background_task.add_task(creatingtask,task)
+    return task.taskID
+
+def creatingtask(task: Task,getMailProperty=getMailProperty,getMessageValue=getMessageValue):
     for message in task.message_list:
+        #把id抓下來跟資料庫比對
+        if not t_pysql.check_duplicate_id(message):
+            # 假如id不在，把property加上去資料庫
+            mail = getMessageValue(token=task.token,MessageID=message)
+            MessageID, Subject, Received, Sender= getMailProperty(mail)
+            t_pysql.insert_maildata(MessageID, Subject, Received,Sender)
+            #continue
+        # 把messageID跟taskID一起放進資料庫
+        t_pysql.insert_messageTask(message,task.taskID)
         upLoadAttatchment(token=task.token,taskID=task.taskID,MessageID=message)
     t_pysql.insert_userTask(userID=task.userID,taskID=task.taskID)
-    return task.taskID
+
+
 
 @app.get("/checkTask")
 def checkTask(userID:str):
