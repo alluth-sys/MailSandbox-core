@@ -1,13 +1,17 @@
-from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
-from fastapi.responses import RedirectResponse
-from starlette.status import HTTP_401_UNAUTHORIZED
-from t_yamlReader import getyamlkey
-import t_pysql
-from getmail import upLoadAttatchment,getMailProperty,getMessageValue
+import os
 from typing import List
-from pydantic import BaseModel
+
 import msal
 import uvicorn
+from fastapi import (BackgroundTasks, FastAPI, File, HTTPException, Request,
+                     UploadFile)
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
+from starlette.status import HTTP_401_UNAUTHORIZED
+
+import t_pysql
+from getmail import getMailProperty, getMessageValue, upLoadAttatchment
+from t_yamlReader import getyamlkey
 
 app = FastAPI()
 HOST = "0.0.0.0"
@@ -189,6 +193,19 @@ def getFileViolation(fileID:str):
         result.append(row[1])
     return result
 
+@app.post("/uploadDocument")
+async def uploadDocument(file: UploadFile = None):
+    if not file:
+        return {"error": "File not provided"}
+    
+    if not os.path.exists('files'):
+        os.makedirs('files')
+
+    file_location = os.path.join('files', file.filename)
+    
+    with open(file_location, "wb") as buffer:
+        buffer.write(file.file.read())
+    return {"filename": file.filename}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=PORT)
