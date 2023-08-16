@@ -125,11 +125,11 @@ def isTaskDone(taskID):
     for row in rows:
         if row[2] == None:
             return False
-    status = str(t_pysql.getTaskStatus(taskID))
-    if status == "('uploading_file_done',)":
+    status = str(t_pysql.getTaskStatus(taskID)['status'])
+    if status == "uploading_file_done":
         t_pysql.updateTaskStatus(taskID,"success")
         return True#True
-    elif status == "('success',)":
+    elif status == "success":
         return True
     return False
 
