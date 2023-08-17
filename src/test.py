@@ -1,24 +1,65 @@
+# # from fastapi import FastAPI, UploadFile, File, HTTPException
+
 # import os
-# import json
-# from unittest.mock import Mock, patch
-# from getmail import getMessageValue
-# from datetime import datetime
+# import zipfile
 
-# mail = getMessageValue(messageID="AQMkADAwATM3ZmYAZS1kNGY3LWZhNTMtMDACLTAwCgBGAAADY9XFoJ43pEe2TYRuW9aNfAcAafGhIvVpyk_198HMOQEhIwAAAgEMAAAAafGhIvVpyk_198HMOQEhIwAFGsOrOgAAAA==",
-#                        token='EwB4A8l6BAAUAOyDv0l6PcCVu89kmzvqZmkWABkAAZZVGu8LKHX1umubDCWpJWnELin7xrPqjt6epb1YzwM7pKNt/ltkjOyMvO4Tdc5eNrHhRhbGxfWnCXwE96Zft21Benjbk4uCuCnAB71xQvu+j9aK+hWaOpGcQAiBDteNC59OJBBq3fM1pJK74iekrPt9/FC++kSVRYHCXpOKNrWWQz+ImgiPAxpSu/yI7j3h3KudpR/ytBEMSz6ZlDs+8/RQHKwY6v8J621jRLac5hyZpdv4y63oDUhoJnOwwlVdZ7p6DcqnyoplVxDxSj1TZti1rjhnDcNhbcPgZdakOM8MH/oOTS/9RczXbCGUtDzs5N2qsj52k7ONNzdFQB+UrU8DZgAACHC3Mfz7avYRSALvc1agVHi0SVkBVKHnogWiTqsSTwtBGoDYB2v75wPImC+RUgobFL2lC/QcrJRlnU4SBgXIV8B2dZyseHbJfgF79AKoYSsPMi++HSeVk4aZFxJhsYQfr2fBndDy8j3qikpCWPsy/WWlewkED2VafNI3aulO7dVLyrlVANCEaVZYzoX+E7MX+utexEKnZI3SoJx69vJbUFcOEaF0QT0exchXJuEeMBso/1SknDzL/c83lC1WxrC419+Ts6yO/vwb30rv85ppueAlrz8A59BO78K6SOxFivbvA/FNLNxaxzUjFf3A9Wc8q6mLDIiTp+vwdTnvVySAAq/vbqzIkDwKkIXxrM0/FsSvPb378oA3aQRAJZGUy0huSt1RsBdI5n3uTdK5UAyYOipCkUDinmHDb2O6OFJyU22ls9S3fdpZHwVi7fmMKXoN29hz8oxLEDAhN551ddbeLPW6+kt5S87a8ExhRcP63+YwxExlaviYYZlCResfoghayavET9+qXhNQPTk8rmyFZc1Q7fsa75X3b9Q0Q8wd4Y4GKbQwh4EYfAwkzzMa3I6+leNy0Dy0DQMsca61faLmYAjYssUMxliAH232COAPVdnYGMLYmR6OXaL6jmQXVDbt6gO5D0OSZt4VPc5ZQ43zQZOzYzTtw9r/9QCjGirp5DL/qA7eH2r7PM6XeZDXbX9P37e5DNEaPm/HdXju/UThxnOT+KFbq1q6cpcTkF0DIH4f3jQ9kQ8TF8Ugmrrdxq6yD8BBoDYYySQRFnJ3GKfhqaAFcocC')
+# # app = FastAPI()
 
-# if "error" in mail:
-#     print("Hi")
-# else:
-#     received_datetime = datetime.strptime(mail['receivedDateTime'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
+# # Initialize GCS
 
-#     #把信件的值取出
-#     MessageID, Subject, Received, Sender= \
-#         mail['id'],mail['subject'], received_datetime, mail['from']['emailAddress']['address']
 
-#     # 假如不在那就加入資料庫並且繼續掃描
-#     print(MessageID, Subject, Received,Sender)
+# # @app.post("/upload/")
+# # async def upload_file(file: UploadFile = File(...)):
+#     # try:
+#         # Read the uploaded file
+#         # file_content = await file.read()
+        
+#         # Create a blob in the bucket and upload the file
 
-data = '123'
 
-print(data[0:20])
+# #file = UploadFile()
+taskID = "dcb9ee1b-4a55-4e16-a2fd-363bcdd417e4"
+outputfiles = ["pdfparser.txt",\
+               "trid.txt",\
+    "hkcr_differences.txt",\
+	"hkcu_differences.txt",\
+	"hklm_differences.txt",\
+	"hku_differences.txt",\
+	"hkcc_differences.txt",\
+	#"Logfile.csv",\
+	"1_init.jpg",\
+	"2_procmon.jpg",\
+	"3_openFile.jpg",\
+	"4_closeFile.jpg"]
+
+def unzip_upload_gcp(outputfiles,taskID):
+    import zipfile
+    zip_path = 'data/' + taskID + "/" + "static.zip"
+    extract_path = 'data/'+taskID
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
+    zip_path = 'data/' + taskID + "/" + "dynamic.zip"
+    extract_path = 'data/'+taskID
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
+    upLoadToGCP(taskID,outputfiles)
+
+def upLoadToGCP(taskID,outputfiles=outputfiles,):
+    import os
+    from google.cloud import storage
+    GCP_BUCKET_NAME = "kowala-result"
+    GCP_CREDENTIALS_FILE = "kowala-396107-cd92e9e2bf76.json"  # your GCP service account JSON key
+    storage_client = storage.Client.from_service_account_json(GCP_CREDENTIALS_FILE)
+    bucket = storage_client.get_bucket(GCP_BUCKET_NAME)
+    for filename in outputfiles:
+        local_path = "./data/" + taskID + "/" + filename
+        #blob_name = os.path.basename(local_path)
+        blob = bucket.blob(taskID+'_'+filename)
+        with open(local_path,'rb') as f:
+            print("Uploading:"+filename)
+            blob.upload_from_file(f)
+
+unzip_upload_gcp(taskID=taskID,outputfiles=["Logfile.csv"])
+
+#testlist = {"a38fcb6f-0ddb-4daa-b10c-ce35e1504f85":{"filename":"OV7670_2006.pdf","createTime":"2023-08-16T06:25:09.909974","status":"init"},"5a6731d2-918a-4b66-9d8e-6b2bb044b10b":{"filename":"OV7670_2006.pdf","createTime":"2023-08-16T06:26:34.640303","status":"init"}}
+

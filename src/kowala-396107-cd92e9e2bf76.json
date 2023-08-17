@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "kowala-396107",
+  "private_key_id": "cd92e9e2bf7624a040988ba84c6b9c316b68a374",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtWabjiCBSSPuc\n9GpPi1HAtTqsQyadWEgDeZDyAss/vHmzDgGWFUFZoIXQHL1vaksZsbgX9PjW3w2G\nFDkQ9xqfPEhzY4GAX+E2E51no0gKvsPJZy9iXY+VsLMA5yd8KksLidF9Q7d+hHr5\nduSXBMv2czidnl9XEkikPbhZuFiGzVkIzJvWdUvizeQzxbA9KT3EF6cUGeSpxUd9\niKLG/rTCGVUJRFM8mU2fdl1cDz7Rz8gIAQSEbbIhhonuh5MxjwTqKrQURJKqPHzS\n2UQGWpjWwuYSr89VVO4mH+OR6yQ2vMjmK7T1EzaHq1XkdSCWWC6ahodaEf67oYcK\nU9lva6oxAgMBAAECggEABIQ8u6cupkUhMjWiL7steC8rSmHXYlH7HuL9f96Xsxaw\n6y8NXyDSx2YJw00XEA17h5L8ScuBcqpr6IQSgVzakS7gCoIkEU6p8uglIBY2Aj7+\n1OmJiabD3wTnX7nIN+sach4uq7jqr3dCc6c45vN3pLUxBfizg59SzEQqV+2xu/t+\nRfnp6yv7bQBHwtSnV0zfLUk2NNanyR7JQF/Bo7i9xMVC6yGojsm8rp+gpqz5b305\nKE3rGqJtSswPQ0NIRxkc9x+tNP6VPoWCdraPytIf3uUjTCMo8Puo3mk5FOGaScST\nl4CIUl4nfoFDK+En0BrObpvP26IGjYnesMYSXrVrrQKBgQDnIz1rTtT/gFS+znHV\n4aucALkxV4XdbsGyw6l8UzPK+xDaF4IvQFOmOiUZOwwobNI8HFEwz3GMJkgcLubp\nRC197jevfeL85VQliKwni7oCDeivpOupqwMXHWKmZ4p4854DEyAQ9gfQoFXTQ2ym\nt03BHDn3zxIokP213mQrbQiM7wKBgQC//yNma2pWDWFp7zIBH+Yqz1WpF9AIvk/B\nq1FhUhpE9FNb3wgFjc3QcNrqP8XKu79fA6nMfNqTj+pkdHQ5qs5fW9gkVzRsEx1i\n4WVG493IwZrTcBEBnLdpHo3rSA9VuuPCPpJ9EixkWwWUVCnBWx1lxmfll7C9J5aK\nGeasOSF63wKBgQCRrdpWOfdxmhbPtBp3babVynburHVI3TfkTgISw/YO5zL14n9A\n/NA8IsWjI15EVGIlVMuvce/lH3Ovn7gWKcxqZKxgRX29W2UvyvaGbkCsbsvLeKy3\n4XsvJGw66WOTXCipU3KQfiDq00OExihC46F0JzA6Ch8txkTCTgrge/Y5rQKBgQCx\nrUIsYRFqCz3wE/y5j7SoP3FtZ20M+lnCx3ErWBiZYWXXKmI5CY7C6/2bNGMth2vF\nWRWE+LIqRs/KIP8B8vDCzLMMhmsr7NCQFjhsTymKxKgsLZR/YnFVZYI+j1QpqSdn\nNhLIjc3pHVbferediV1+NwslLKjRk9Y7fVa8YK58DwKBgFeSy6Bbi/ki1C7MWtUA\nr03WTyGPGvzGQdOOBlcOYB7qAD20w41609fm9IO33YaBDy/0rnPMiyGqRABPN5sv\nj3JhDQB6wP4YMRM7kOzRKI4b3p03Cgn7VxP+fmrffsGUuT9eksUeB0rce2CzBuJH\nlgAC2oscs+XgE80VwbJgLPjs\n-----END PRIVATE KEY-----\n",
+  "client_email": "kowala-storage-manager@kowala-396107.iam.gserviceaccount.com",
+  "client_id": "111773337324006789195",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kowala-storage-manager%40kowala-396107.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -160,6 +160,18 @@ def getFileViolation(fileID:str):
 ####################################################################################
 # 定義 mail相關 route
 
+# 動態分析相關status
+# init
+# finish_static_report
+# start_generating_shot
+# start_dynamic_analysis
+# start_generating_aftershot
+# start_processing_file
+# generating_report
+# report_upload_success
+
+
+
 # 開始沙箱的地方
 @app.post("/uploadDocument")
 async def uploadDocument(file: UploadFile = File(...),taskID: str = Form(None), time: int = Form(None)):
@@ -191,7 +203,8 @@ async def uploadDocument(file: UploadFile = File(...),taskID: str = Form(None), 
     url = "http://host.docker.internal:8000/startSand/"
     data = {'taskID': taskID,'time':time}
     await requestFile(url,data,file)
-    return {"filename":file.filename}
+    #return {"filename":file.filename}
+    return {"taskID",taskID}
 
 class Status(BaseModel):
     taskID: str
@@ -211,17 +224,33 @@ taskList: Dict[str, DTask] = {}
 async def create_upload_file(file: UploadFile = File(...),perpose:str = Form(None),taskID:str = Form(None)):
     #先在data底下建立task資料夾
     # 建立一個名為 'my_folder' 的資料夾
-    taskdata_paht = './data/' + str(taskID)
-    if not os.path.exists(taskdata_paht):
-        os.mkdir(taskdata_paht)
+    taskdata_path = './data/' + str(taskID)
+    if not os.path.exists(taskdata_path):
+        os.mkdir(taskdata_path)
     #確定是哪一類檔案，儲存zip到指定資料夾
     if perpose == "static":
-        file_location = taskdata_paht + "/static.zip"
+        file_location = taskdata_path + "/static.zip"
     if perpose == "dynamic":
-        file_location = taskdata_paht + "/dynamic.zip"
+        file_location = taskdata_path + "/dynamic.zip"
     #儲存檔案
     with open(file_location, "wb+") as file_object:
         file_object.write(await file.read())
+
+    if perpose == "dynamic":
+        outputfiles = ["pdfparser.txt",\
+               "trid.txt",\
+            "hkcr_differences.txt",\
+            "hkcu_differences.txt",\
+            "hklm_differences.txt",\
+            "hku_differences.txt",\
+            "hkcc_differences.txt",\
+            #"Logfile.csv",\
+            "1_init.jpg",\
+            "2_procmon.jpg",\
+            "3_openFile.jpg",\
+            "4_closeFile.jpg"]
+        unzip_upload_gcp(outputfiles=outputfiles,taskID=taskID)
+        taskList[taskID].status = "report_upload_success"
 
     #解壓縮
     return {"info": f"file '{file.filename}' saved at location: {file_location}"}
@@ -229,7 +258,7 @@ async def create_upload_file(file: UploadFile = File(...),perpose:str = Form(Non
 # 這邊是去更新task list裡面的task
 @app.post("/updateStatus")
 async def updateStatus(status:str = Form(None),taskID:str = Form(None)):
-    taskList[taskID] = status
+    taskList[taskID]["status"] = status
     return "updata Success"
 
 
@@ -239,7 +268,16 @@ async def testGOGO():
 
 @app.get("/getTaskStatus")
 async def getTaskStatus():
-    return taskList
+    result = []
+    for i in taskList:
+        newlist = {}
+        newlist["id"] = i
+        print(taskList[i])
+        newlist["filename"] = taskList[i].filename
+        newlist["createTime"] = taskList[i].createTime
+        newlist["status"] = taskList[i].status
+        result.append(newlist)
+    return result
 
 async def requestFile(url,data,file):
     # 把檔案request進去
@@ -252,6 +290,34 @@ async def requestFile(url,data,file):
         response = await client.post(url, files=files,data=data)
     print("this is request site", response)
     return 'good'
+
+
+def unzip_upload_gcp(outputfiles,taskID):
+    import zipfile
+    zip_path = 'data/' + taskID + "/" + "static.zip"
+    extract_path = 'data/'+taskID
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
+    zip_path = 'data/' + taskID + "/" + "dynamic.zip"
+    extract_path = 'data/'+taskID
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
+    upLoadToGCP(taskID,outputfiles)
+
+def upLoadToGCP(taskID,outputfiles):
+    import os
+    from google.cloud import storage
+    GCP_BUCKET_NAME = "kowala-result"
+    GCP_CREDENTIALS_FILE = "kowala-396107-cd92e9e2bf76.json"  # your GCP service account JSON key
+    storage_client = storage.Client.from_service_account_json(GCP_CREDENTIALS_FILE)
+    bucket = storage_client.get_bucket(GCP_BUCKET_NAME)
+    for filename in outputfiles:
+        local_path = "./data/" + taskID + "/" + filename
+        #blob_name = os.path.basename(local_path)
+        blob = bucket.blob(taskID+'_'+filename)
+        with open(local_path,'rb') as f:
+            print("Uploading:"+filename)
+            blob.upload_from_file(f)
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=PORT)
