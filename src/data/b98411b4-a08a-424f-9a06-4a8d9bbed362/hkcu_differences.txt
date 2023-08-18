@@ -1,0 +1,212 @@
+Comparing files hkcu_original.reg and HKCU_NEW.REG
+***** hkcu_original.reg
+"IECompatVersionLow"=dword:178e5b81
+"CVListPingLastYMD"=hex:e7,07,08,00,04,00,11,00,03,00,28,00,20,00,8e,02
+"CVListPingBitmap"=hex:c2,00,00,00,35,01,ab,3f
+***** HKCU_NEW.REG
+"IECompatVersionLow"=dword:178e5b81
+"CVListPingLastYMD"=hex:e7,07,08,00,04,00,11,00,03,00,2d,00,2c,00,ba,00
+"CVListPingBitmap"=hex:c2,00,00,00,35,01,ab,3f
+*****
+
+***** hkcu_original.reg
+"TelemetrySalt"=dword:00000001
+"GlobalAssocChangedCounter"=dword:00000077
+"FirstRunTelemetryComplete"=dword:00000001
+***** HKCU_NEW.REG
+"TelemetrySalt"=dword:00000001
+"GlobalAssocChangedCounter"=dword:00000078
+"FirstRunTelemetryComplete"=dword:00000001
+*****
+
+***** hkcu_original.reg
+"Microsoft.MicrosoftEdge_41.16299.248.0_neutral__8wekyb3d8bbwe+PdfReader#{000015cc-0079-0000-33a1-030000000000}"=dword:00000005
+"Microsoft.MicrosoftEdge_41.16299.248.0_neutral__8wekyb3d8bbwe+MicrosoftEdge"=dword:00000005
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo]
+***** HKCU_NEW.REG
+"Microsoft.MicrosoftEdge_41.16299.248.0_neutral__8wekyb3d8bbwe+PdfReader#{000015cc-0079-0000-33a1-030000000000}"=dword:00000005
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo]
+*****
+
+***** hkcu_original.reg
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000040
+3A0]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+***** HKCU_NEW.REG
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000040
+358]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+*****
+
+***** hkcu_original.reg
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000040
+3A8]
+***** HKCU_NEW.REG
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000040
+3A0]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000040
+3A8]
+*****
+
+***** hkcu_original.reg
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000050
+25C]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+***** HKCU_NEW.REG
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000050
+140]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+*****
+
+***** hkcu_original.reg
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000070
+13A]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+***** HKCU_NEW.REG
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000050
+25C]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+*****
+
+***** hkcu_original.reg
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\WRT:Microsoft.Mic
+rosoftEdge_8wekyb3d8bbwe!MicrosoftEdge+1]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+***** HKCU_NEW.REG
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000060
+2F4]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+*****
+
+***** hkcu_original.reg
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\DesktopSwitchCompleted]
+***** HKCU_NEW.REG
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\W32:0000000000070
+13A]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\ApplicationViewManagement\WRT:Microsoft.Mic
+rosoftEdge_8wekyb3d8bbwe!MicrosoftEdge+1]
+"VirtualDesktop"=hex:10,00,00,00,30,30,44,56,ab,df,65,06,5c,a5,9c,42,b0,a1,64,\
+  c5,9f,92,89,94
+"ShowInSwitchers"=hex:04,00,00,00,30,30,53,53,01,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\DesktopSwitchCompleted]
+*****
+
+***** hkcu_original.reg
+atile]
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\LogonSoundHasBeenPlayed]
+***** HKCU_NEW.REG
+atile]
+"Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge"=dword:00000001
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\SessionInfo\1\LogonSoundHasBeenPlayed]
+*****
+
+***** hkcu_original.reg
+"Legacy.Eudp"="0x00000000"
+"Legacy.Modeless"="0x00000000"
+***** HKCU_NEW.REG
+"Legacy.Eudp"="0x00000000"
+"Legacy.Modeless"="0x00000000"
+*****
+
+***** hkcu_original.reg
+  00,00,00,02,00,00,00,50,00,00,00,00,00,00,00,00,00,00,80,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,2a,7e,03,00,00,00,00,00,25,00,00,00,01,00,00,\
+  00,00,00,00,00,00,00,00,c0,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  cf,09,01,00,00,00,00,00,54,00,00,00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers]
+***** HKCU_NEW.REG
+  00,00,00,02,00,00,00,50,00,00,00,00,00,00,00,00,00,00,80,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,2a,7e,03,00,00,00,00,00,26,00,00,00,01,00,00,\
+  00,00,00,00,00,00,00,00,c0,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  cf,09,01,00,00,00,00,00,56,00,00,00,00,00,00,00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers]
+*****
+
+***** hkcu_original.reg
+"DynamicCodePolicy"=hex:05,00,00,00
+"ACGOnTimestamp"=hex:aa,4f,e4,84,bc,d0,d9,01
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+***** HKCU_NEW.REG
+"DynamicCodePolicy"=hex:05,00,00,00
+"ACGOnTimestamp"=hex:23,05,78,3d,bd,d0,d9,01
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+*****
+
+***** hkcu_original.reg
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\HostExtension]
+"LearningToolsInstalled"="no"
+"AutoFormFillInstalled"="no"
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+***** HKCU_NEW.REG
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\HostExtension]
+"LearningToolsInstalled"="yes"
+"AutoFormFillInstalled"="yes"
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+*****
+
+***** hkcu_original.reg
+"SearchScopesUpgradeVersion"=dword:00000001
+"ProtectedGlobalExtensionSetting"=hex:01,00,00,00,ad,5f,4a,41,bd,73,b8,1c,97,\
+  33,ef,03,16,00,b8,18,85,76,46,96,41,7f,50,58,02,21,c2,d6,be,07,ae,6f,95,ef,\
+  57,02,06,64,81,23,b9,82,3f,20,c8,9d,3d,49,a5,11,e4,a7,51,53,c4,ed,98,c8
+"GlobalExtensionSettingUpgradeVersion"=dword:00000001
+***** HKCU_NEW.REG
+"SearchScopesUpgradeVersion"=dword:00000001
+"ProtectedGlobalExtensionSetting"=hex:01,00,00,00,8e,6e,b1,6b,18,0b,1a,2a,60,\
+  21,16,8e,5b,1a,30,9b,b6,7b,a7,44,ac,73,21,22,bd,37,83,d7,8b,e7,9e,fb,16,e4,\
+  78,f9,83,ca,93,dc,4e,83,b8,0b,55,3a,e2,26,f6,44,b3,c0,cc,d6,78,32,37,cc
+"GlobalExtensionSettingUpgradeVersion"=dword:00000001
+*****
+
+***** hkcu_original.reg
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\Recovery\Active]
+"{CD85B084-347D-4FF6-9FD2-2E083C9AA8FC}"=dword:00000000
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+***** HKCU_NEW.REG
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\Recovery\Active]
+"{5823B8A9-8623-4185-B92C-304BF99C915D}"=dword:00000000
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+*****
+
+***** hkcu_original.reg
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\Recovery\PendingDelete]
+"C:\\Users\\REM\\AppData\\Local\\Packages\\microsoft.microsoftedge_8wekyb3d8bbwe\\AC\\MicrosoftEdge\\User\\Default\\Recovery\\A
+ctive\\{23B157BB-B143-4DA6-A076-11F1B4B3654E}.dat"=dword:00000000
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+***** HKCU_NEW.REG
+rosoftedge_8wekyb3d8bbwe\MicrosoftEdge\Recovery\PendingDelete]
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.mic
+*****
+
+***** hkcu_original.reg
+"L1WatermarkHighPart"=dword:00000000
+"NextCheckForUpdateLowDateTime"=dword:f4b194e1
+"NextCheckForUpdateHighDateTime"=dword:01d9d0c4
+"UrlBlockLastFullUpdateLowDateTime"=dword:00000000
+***** HKCU_NEW.REG
+"L1WatermarkHighPart"=dword:00000000
+"NextCheckForUpdateLowDateTime"=dword:b56b7be5
+"NextCheckForUpdateHighDateTime"=dword:01d9d0c5
+"UrlBlockLastFullUpdateLowDateTime"=dword:00000000
+*****
+
+***** hkcu_original.reg
+rosoftedge_8wekyb3d8bbwe\CIStatus]
+"CIStatusTimestamp"=hex:61,64,d9,98,bc,d0,d9,01
+"EnablementState"=dword:00000001
+***** HKCU_NEW.REG
+rosoftedge_8wekyb3d8bbwe\CIStatus]
+"CIStatusTimestamp"=hex:00,cf,be,43,bd,d0,d9,01
+"EnablementState"=dword:00000001
+*****
+
