@@ -1,16 +1,17 @@
 import os
-from typing import List
+import uuid
+from datetime import datetime
+from typing import Dict, List
+
+import httpx
 import uvicorn
-from fastapi import (BackgroundTasks, FastAPI, File, Request, Form,
-                     UploadFile)
+from fastapi import BackgroundTasks, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 import t_pysql
 from getmail import getMailProperty, getMessageValue, upLoadAttatchment
-from datetime import datetime
-import uuid
-from typing import Dict
-import httpx
+
 # import 區域
 ####################################################################################
 # 建立fastAPI的東西
@@ -115,14 +116,15 @@ def checkTask(userID:str):
         dic = {
             "taskID":task[1],
             "subjects":getSubjectsbyTaskID(task[1]),
-            "isFinish":isTaskDone(task[1])
+            "isFinish":isTaskDone(task[1]),
+            "createdTime":t_pysql.getTaskTIme(task[1])
         }
         result.append(dic)
     return result
 
 # 依照某一個TaskID，取得所有mail subject
 def getSubjectsbyTaskID(taskID):
-    from t_pysql import getSubjectByMailID, getMailIDbyTaskID
+    from t_pysql import getMailIDbyTaskID, getSubjectByMailID
     result = []
     mailIDs = getMailIDbyTaskID(taskID)
     for mailID in mailIDs:
@@ -318,6 +320,7 @@ def unzip_upload_gcp(outputfiles,taskID):
 
 def upLoadToGCP(taskID,outputfiles):
     import os
+
     from google.cloud import storage
     GCP_BUCKET_NAME = "kowala-result"
     GCP_CREDENTIALS_FILE = "kowala-396107-cd92e9e2bf76.json"  # your GCP service account JSON key
