@@ -115,7 +115,8 @@ def checkTask(userID:str):
         dic = {
             "taskID":task[1],
             "subjects":getSubjectsbyTaskID(task[1]),
-            "isFinish":isTaskDone(task[1])
+            "isFinish":isTaskDone(task[1]),
+            "createdTime":t_pysql.getTaskTIme(task[1])
         }
         result.append(dic)
     return result

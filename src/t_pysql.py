@@ -177,6 +177,8 @@ def getSubjectByMailID(mailID):
     conn.close()
     return subjects
 
+
+
 def getTaskByUser(userID):
     conn = create_connection()
     cursor = conn.cursor()
@@ -193,6 +195,22 @@ def getTaskByUser(userID):
         rows.append(row)
     conn.close()
     return rows
+
+def getTaskTIme(taskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT * 
+        FROM task 
+        WHERE TaskID = %s
+    """
+    cursor.execute(task_query, (taskID,))
+    for row in cursor:
+        result = row[1]
+    conn.close()
+    return result
 
 def getFileIDByTask(taskID):
     conn = create_connection()
