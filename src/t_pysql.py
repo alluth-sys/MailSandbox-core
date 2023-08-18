@@ -139,6 +139,44 @@ def insert_messageTask(messageID,taskID):
     cursor.close()
     conn.close()
 
+def getMailIDbyTaskID(taskID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT * 
+        FROM mail_task 
+        WHERE taskID = %s
+    """
+    cursor.execute(task_query, (taskID,))
+    messageIDs = []
+    #rows = []
+    for row in cursor:
+        #rows.append(row)
+        messageIDs.append(row[0])
+    conn.close()
+    return messageIDs
+
+
+def getSubjectByMailID(mailID):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    # Query for task 'ttttt'
+    task_query = """
+        SELECT * 
+        FROM mail 
+        WHERE MessageID = %s
+    """
+    cursor.execute(task_query, (mailID,))
+    #rows = []
+    for row in cursor:
+        #rows.append(row)
+        subjects=row[1]
+    conn.close()
+    return subjects
+
 def getTaskByUser(userID):
     conn = create_connection()
     cursor = conn.cursor()

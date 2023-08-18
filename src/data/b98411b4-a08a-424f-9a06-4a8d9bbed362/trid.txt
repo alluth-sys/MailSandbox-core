@@ -1,0 +1,7 @@
+
+TrID/32 - File Identifier v2.24 - (C) 2003-16 By M.Pontello
+Definitions found:  16439
+Analyzing...
+
+Collecting data from file: C:\Users\REM\Desktop\python\inputData\vix162_vmrun_command.pdf
+100.0% (.PDF) Adobe Portable Document Format (5000/1)

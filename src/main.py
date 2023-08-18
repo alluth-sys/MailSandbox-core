@@ -114,10 +114,21 @@ def checkTask(userID:str):
     for task in userTasks:
         dic = {
             "taskID":task[1],
+            "subjects":getSubjectsbyTaskID(task[1]),
             "isFinish":isTaskDone(task[1])
         }
         result.append(dic)
     return result
+
+def getSubjectsbyTaskID(taskID):
+    from t_pysql import getSubjectByMailID, getMailIDbyTaskID
+    result = []
+    mailIDs = getMailIDbyTaskID(taskID)
+    for mailID in mailIDs:
+        result.append(getSubjectByMailID(mailID))
+    #print(result)
+    return result
+
 
 # 主要是會去看task是否結束
 def isTaskDone(taskID):
@@ -204,7 +215,7 @@ async def uploadDocument(file: UploadFile = File(...),taskID: str = Form(None), 
     data = {'taskID': taskID,'time':time}
     await requestFile(url,data,file)
     #return {"filename":file.filename}
-    return {"taskID",taskID}
+    return {"taskID":taskID}
 
 class Status(BaseModel):
     taskID: str
@@ -258,13 +269,12 @@ async def create_upload_file(file: UploadFile = File(...),perpose:str = Form(Non
 # 這邊是去更新task list裡面的task
 @app.post("/updateStatus")
 async def updateStatus(status:str = Form(None),taskID:str = Form(None)):
-    taskList[taskID]["status"] = status
+    taskList[taskID].status = status
     return "updata Success"
-
 
 @app.get("/testGOGO/")
 async def testGOGO():
-    return "Jackfood"
+    return getSubjectsbyTaskID("dododo888")
 
 @app.get("/getTaskStatus")
 async def getTaskStatus():

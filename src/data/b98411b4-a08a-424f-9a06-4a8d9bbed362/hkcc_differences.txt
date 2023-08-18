@@ -1,0 +1,3 @@
+Comparing files hkcc_original.reg and HKCC_NEW.REG
+FC: no differences encountered
+
